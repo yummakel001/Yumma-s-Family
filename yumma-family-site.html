@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Yumma Family</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Karla:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#FFF8EC;
+    --ink:#2B2140;
+    --coral:#FF6B5B;
+    --teal:#1FB6A6;
+    --yellow:#FFC94D;
+    --pink:#FFD3E0;
+    --lilac:#C9B8FF;
+    --paper:#FFFDF8;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Karla', sans-serif;
+    font-size:17px;
+    line-height:1.6;
+    overflow-x:hidden;
+  }
+
+  h1,h2,h3, .display{
+    font-family:'Baloo 2', sans-serif;
+    margin:0;
+    line-height:1.05;
+  }
+
+  a{color:var(--coral); text-decoration:none;}
+  a:focus-visible, button:focus-visible{outline:3px solid var(--ink); outline-offset:3px;}
+
+  .wrap{max-width:1040px; margin:0 auto; padding:0 28px;}
+
+  /* ---------- decorative blobs ---------- */
+  .blob{position:absolute; z-index:0; opacity:0.9;}
+
+  /* ---------- header / nav ---------- */
+  header{
+    position:relative;
+    padding:28px 0 0;
+  }
+  .nav{
+    display:flex; align-items:center; justify-content:space-between;
+    max-width:1040px; margin:0 auto; padding:0 28px;
+    position:relative; z-index:2;
+  }
+  .nav .mark{
+    font-family:'Baloo 2', sans-serif;
+    font-weight:700;
+    font-size:1.3rem;
+    display:flex; align-items:center; gap:10px;
+  }
+  .mark .dot{
+    width:14px; height:14px; border-radius:50%;
+    background:var(--coral);
+    display:inline-block;
+  }
+  .nav ul{
+    list-style:none; display:flex; gap:26px; margin:0; padding:0;
+  }
+  .nav a{
+    color:var(--ink); font-weight:700; font-size:0.95rem;
+    padding-bottom:3px; border-bottom:3px solid transparent;
+  }
+  .nav a:hover{ border-bottom-color:var(--yellow); }
+  .nav .toggle{ display:none; }
+
+  @media (max-width:640px){
+    .nav ul{
+      position:fixed; top:0; right:-100%; height:100vh; width:220px;
+      background:var(--paper); flex-direction:column; padding:90px 28px;
+      transition:right .35s ease; box-shadow:-6px 0 24px rgba(0,0,0,.12);
+      z-index:5;
+    }
+    .nav ul.open{ right:0; }
+    .nav .toggle{
+      display:block; background:none; border:none; cursor:pointer;
+      z-index:6; position:relative;
+    }
+    .nav .toggle span{
+      display:block; width:26px; height:3px; background:var(--ink); margin:5px 0; border-radius:2px;
+    }
+  }
+
+  /* ---------- hero ---------- */
+  .hero{
+    position:relative;
+    padding:70px 0 100px;
+    overflow:hidden;
+  }
+  .hero .wrap{ position:relative; z-index:2; }
+  .hero .eyebrow-note{
+    font-size:1.05rem;
+    color:var(--ink);
+    opacity:0.75;
+    max-width:420px;
+    margin-top:18px;
+  }
+  .hero h1{
+    font-size:clamp(2.6rem, 7vw, 5.2rem);
+    color:var(--ink);
+    transform:rotate(-2deg);
+    display:inline-block;
+  }
+  .hero h1 .accent{ color:var(--coral); }
+  .hero-meta{
+    margin-top:34px;
+    display:flex; gap:14px; flex-wrap:wrap;
+    align-items:center;
+  }
+  .pill{
+    background:var(--paper);
+    border:2px solid var(--ink);
+    border-radius:999px;
+    padding:8px 18px;
+    font-weight:700;
+    font-size:0.9rem;
+    transform:rotate(-1deg);
+  }
+  .pill.solid{ background:var(--yellow); }
+
+  /* ---------- section headers with tape ---------- */
+  .section{ position:relative; padding:64px 0; }
+  .section-head{
+    position:relative;
+    display:inline-block;
+    margin-bottom:38px;
+  }
+  .tape{
+    position:absolute; top:-14px; left:50%; transform:translateX(-50%) rotate(-3deg);
+    width:70px; height:22px;
+    background:var(--yellow);
+    opacity:0.9;
+    box-shadow:0 2px 4px rgba(0,0,0,.08);
+  }
+  .section-head h2{
+    font-size:clamp(1.8rem, 4vw, 2.6rem);
+    background:var(--paper);
+    padding:10px 22px;
+    border:2px solid var(--ink);
+    display:inline-block;
+    transform:rotate(-1deg);
+  }
+
+  /* ---------- news feed ---------- */
+  .feed{ display:flex; flex-direction:column; gap:26px; }
+  .feed-item{
+    position:relative;
+    background:var(--paper);
+    border:2px solid var(--ink);
+    border-radius:18px;
+    padding:22px 26px;
+    max-width:640px;
+  }
+  .feed-item:nth-child(odd){ align-self:flex-start; margin-left:0; }
+  .feed-item:nth-child(even){ align-self:flex-end; margin-right:0; }
+  .feed-item::before{
+    content:"";
+    position:absolute; top:-10px; left:26px;
+    width:46px; height:16px;
+    background:var(--pink);
+    transform:rotate(-4deg);
+  }
+  .feed-item:nth-child(even)::before{
+    left:auto; right:26px; background:var(--teal); transform:rotate(4deg);
+  }
+  .feed-date{
+    font-weight:700; color:var(--coral); font-size:0.85rem;
+    letter-spacing:0.02em;
+  }
+  .feed-item h3{ font-size:1.3rem; margin:6px 0 8px; }
+  .feed-item p{ margin:0; opacity:0.85; }
+  .feed-item .who{
+    display:inline-block; margin-top:12px; font-weight:700; font-size:0.85rem;
+    background:var(--yellow); padding:3px 10px; border-radius:8px;
+  }
+
+  @media (max-width:640px){
+    .feed-item, .feed-item:nth-child(even){ align-self:stretch; max-width:none; }
+  }
+
+  /* ---------- events strip ---------- */
+  .tickets{
+    display:flex; gap:22px; overflow-x:auto; padding:10px 4px 26px;
+    scroll-snap-type:x mandatory;
+  }
+  .ticket{
+    scroll-snap-align:start;
+    flex:0 0 220px;
+    background:var(--lilac);
+    border:2px solid var(--ink);
+    border-radius:14px;
+    padding:20px;
+    position:relative;
+  }
+  .ticket::before, .ticket::after{
+    content:""; position:absolute; width:22px; height:22px;
+    background:var(--cream); border:2px solid var(--ink); border-radius:50%;
+    top:50%; transform:translateY(-50%);
+  }
+  .ticket::before{ left:-13px; }
+  .ticket::after{ right:-13px; }
+  .ticket .day{ font-family:'Baloo 2'; font-size:2.4rem; font-weight:700; line-height:1; }
+  .ticket .month{ font-weight:700; text-transform:uppercase; font-size:0.8rem; letter-spacing:0.06em; opacity:0.7;}
+  .ticket h3{ font-size:1.1rem; margin:12px 0 6px; }
+  .ticket p{ margin:0; font-size:0.9rem; opacity:0.8; }
+  .ticket:nth-child(2n){ background:var(--yellow); }
+  .ticket:nth-child(3n){ background:var(--pink); }
+
+  /* ---------- photo corner ---------- */
+  .frames{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(160px, 1fr));
+    gap:26px;
+  }
+  .frame{
+    aspect-ratio:4/5;
+    border-radius:10px;
+    display:flex; align-items:flex-end; padding:16px;
+    font-weight:700; color:var(--paper);
+    font-size:0.95rem;
+    border:6px solid var(--paper);
+    box-shadow:0 0 0 2px var(--ink);
+  }
+  .frame:nth-child(1){ background:linear-gradient(160deg, var(--coral), #ff9782); transform:rotate(-3deg); }
+  .frame:nth-child(2){ background:linear-gradient(160deg, var(--teal), #6fe0d3); transform:rotate(2deg); }
+  .frame:nth-child(3){ background:linear-gradient(160deg, var(--lilac), #a993ff); transform:rotate(-1.5deg); }
+  .frame:nth-child(4){ background:linear-gradient(160deg, var(--yellow), #ffdd8a); color:var(--ink); transform:rotate(3deg); }
+  .frame span{ background:rgba(0,0,0,0.18); padding:3px 9px; border-radius:6px; }
+  .frame:nth-child(4) span{ background:rgba(255,255,255,0.5); }
+
+  /* ---------- crew (3D scroll reveal) ---------- */
+  .crew-note{
+    max-width:460px;
+    opacity:0.75;
+    margin:-12px 0 34px;
+  }
+  .crew-track{
+    display:flex;
+    flex-wrap:wrap;
+    gap:22px;
+    perspective:1400px;
+  }
+  .crew-card{
+    flex:1 1 180px;
+    min-width:150px;
+    aspect-ratio:3/4;
+    border-radius:16px;
+    background:var(--tilt-bg);
+    border:2px solid var(--ink);
+    padding:18px;
+    display:flex;
+    align-items:flex-end;
+    transform:rotateY(70deg) translateZ(-40px);
+    opacity:0;
+    transition:transform 0.7s cubic-bezier(.2,.7,.3,1), opacity 0.7s ease;
+    transform-style:preserve-3d;
+    will-change:transform, opacity;
+  }
+  .crew-card.in-view{
+    transform:rotateY(0deg) translateZ(0);
+    opacity:1;
+  }
+  .crew-face{
+    background:rgba(0,0,0,0.16);
+    border-radius:10px;
+    padding:10px 12px;
+  }
+  .crew-card[style*="ink"] .crew-face{ background:rgba(255,255,255,0.45); }
+  .crew-order{
+    display:block;
+    font-size:0.72rem;
+    font-weight:700;
+    opacity:0.75;
+    margin-bottom:2px;
+  }
+  .crew-role{
+    display:block;
+    font-family:'Baloo 2', sans-serif;
+    font-weight:700;
+    font-size:1.15rem;
+    margin-bottom:6px;
+  }
+  .crew-face p{ margin:0; font-size:0.85rem; opacity:0.92; }
+
+  @media (max-width:640px){
+    .crew-track{ perspective:900px; }
+    .crew-card{ flex:1 1 42%; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .crew-card{ transition:none; transform:none; opacity:1; }
+  }
+
+  /* ---------- contact / footer ---------- */
+  .footer-wave{
+    display:block; width:100%; height:70px; margin-bottom:-2px;
+  }
+  footer{
+    background:var(--ink);
+    color:var(--cream);
+    padding:50px 0 40px;
+  }
+  footer h2{ color:var(--cream); font-size:1.8rem; }
+  footer p{ opacity:0.8; max-width:480px; }
+  .contact-row{
+    display:flex; gap:18px; flex-wrap:wrap; margin-top:22px;
+  }
+  .contact-row a{
+    color:var(--cream); font-weight:700;
+    border:2px solid var(--cream); border-radius:999px;
+    padding:9px 20px;
+  }
+  .contact-row a:hover{ background:var(--cream); color:var(--ink); }
+  footer .fine{ margin-top:40px; font-size:0.82rem; opacity:0.55; }
+
+  @media (prefers-reduced-motion: no-preference){
+    .hero h1{ animation:settle .6s ease-out; }
+    @keyframes settle{ from{ opacity:0; transform:rotate(-2deg) translateY(14px); } to{ opacity:1; transform:rotate(-2deg) translateY(0); } }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="nav">
+    <div class="mark"><span class="dot"></span> The Yummas</div>
+    <button class="toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul id="navList">
+      <li><a href="#news">What's new</a></li>
+      <li><a href="#crew">The crew</a></li>
+      <li><a href="#events">Coming up</a></li>
+      <li><a href="#photos">Photo corner</a></li>
+      <li><a href="#contact">Get in touch</a></li>
+    </ul>
+  </nav>
+
+  <section class="hero">
+    <svg class="blob" style="top:-60px; right:-80px;" width="340" height="340" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <path fill="#FFC94D" d="M45.7,-56.6C58.4,-46.5,67.3,-30.6,70.6,-13.4C73.9,3.8,71.6,22.3,61.9,35.9C52.3,49.4,35.3,58,17.1,63.1C-1.1,68.2,-20.5,69.8,-35.9,62.1C-51.3,54.4,-62.7,37.3,-66.8,18.7C-71,0.1,-67.9,-19.9,-57.6,-33.9C-47.4,-47.9,-30,-55.8,-12.4,-59.4C5.2,-62.9,33,-66.7,45.7,-56.6Z" transform="translate(100 100)"/>
+    </svg>
+    <svg class="blob" style="bottom:-40px; left:-60px; opacity:0.5;" width="220" height="220" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <path fill="#1FB6A6" d="M39.5,-49.6C50.9,-40.5,59.6,-27.1,63.1,-11.9C66.6,3.3,64.9,20.4,56.4,33.6C47.9,46.8,32.6,56.1,15.9,60.6C-0.8,65.1,-18.9,64.8,-33.9,57.3C-48.9,49.8,-60.8,35.1,-64.8,18.3C-68.8,1.5,-64.9,-17.4,-55.2,-32.1C-45.6,-46.8,-30.3,-57.3,-14.3,-60.1C1.7,-62.9,28.1,-58.7,39.5,-49.6Z" transform="translate(100 100)"/>
+    </svg>
+
+    <div class="wrap">
+      <h1>Hey, it's the <span class="accent">Yummas</span> — <br>welcome to our corner of the internet.</h1>
+      <p class="eyebrow-note">Everything that's happening with us, all in one place — so nobody has to ask "did you see the group chat?" ever again.</p>
+      <div class="hero-meta">
+        <span class="pill solid">Updated weekly(ish)</span>
+        <span class="pill">7 of us, 1 car, 1 group chat</span>
+        <span class="pill">001 Wada Road, Ganaja Otokiti Bypass</span>
+      </div>
+    </div>
+  </section>
+</header>
+
+<main>
+
+  <section class="section" id="news">
+    <div class="wrap">
+      <div class="section-head"><span class="tape"></span><h2>What's new</h2></div>
+      <div class="feed">
+
+        <article class="feed-item">
+          <div class="feed-date">This week</div>
+          <h3>School is near</h3>
+          <p>Resumption is right around the corner — the countdown is officially on.</p>
+          <span class="who">Family update</span>
+        </article>
+
+        <article class="feed-item">
+          <div class="feed-date">This week</div>
+          <h3>Bags packed and neat</h3>
+          <p>Everything's washed, folded, and zipped up. The bags have never looked this organized.</p>
+          <span class="who">Family update</span>
+        </article>
+
+        <article class="feed-item">
+          <div class="feed-date">Coming up</div>
+          <h3>Travelling to school soon</h3>
+          <p>Bags by the door, tickets sorted — next stop is the school gate.</p>
+          <span class="who">Family update</span>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="crew">
+    <div class="wrap">
+      <div class="section-head"><span class="tape"></span><h2>The crew, oldest to youngest</h2></div>
+      <p class="crew-note">Seven of us under one roof (well, most of the time) — scroll to line everyone up.</p>
+      <div class="crew-track">
+        <div class="crew-card" style="--tilt-bg:linear-gradient(160deg, var(--coral), #ff9782);">
+          <div class="crew-face">
+            <span class="crew-order">Dad</span>
+            <span class="crew-role">Yumma Jethro</span>
+            <p>Runs the grill, the group chat, and occasionally his mouth about parking.</p>
+          </div>
+        </div>
+        <div class="crew-card" style="--tilt-bg:linear-gradient(160deg, var(--teal), #6fe0d3);">
+          <div class="crew-face">
+            <span class="crew-order">Mum</span>
+            <span class="crew-role">Dorcas Catherine Yumma</span>
+            <p>The actual CEO of this household. Nothing ships without her sign-off.</p>
+          </div>
+        </div>
+        <div class="crew-card" style="--tilt-bg:linear-gradient(160deg, var(--lilac), #a993ff);">
+          <div class="crew-face">
+            <span class="crew-order">First born</span>
+            <span class="crew-role">Kelvin</span>
+            <p>First to leave the house, first to be blamed when something's missing.</p>
+          </div>
+        </div>
+        <div class="crew-card" style="--tilt-bg:linear-gradient(160deg, var(--yellow), #ffdd8a); color:var(--ink);">
+          <div class="crew-face">
+            <span class="crew-order">Second born</span>
+            <span class="crew-role">David</span>
+            <p>Quietly runs the fantasy league everyone pretends not to care about.</p>
+          </div>
+        </div>
+        <div class="crew-card" style="--tilt-bg:linear-gradient(160deg, var(--pink), #ffb3c9); color:var(--ink);">
+          <div class="crew-face">
+            <span class="crew-order">Third born</span>
+            <span class="crew-role">Dominion</span>
+            <p>Right in the middle of the boys and somehow still in charge of all of them.</p>
+          </div>
+        </div>
+        <div class="crew-card" style="--tilt-bg:linear-gradient(160deg, var(--teal), #3fd6c2);">
+          <div class="crew-face">
+            <span class="crew-order">Fourth born</span>
+            <span class="crew-role">Divine</span>
+            <p>Borrows everyone's chargers, returns none of them.</p>
+          </div>
+        </div>
+        <div class="crew-card" style="--tilt-bg:linear-gradient(160deg, var(--coral), #ffab9c);">
+          <div class="crew-face">
+            <span class="crew-order">Fifth born</span>
+            <span class="crew-role">Uriel</span>
+            <p>The baby of the family and knows exactly how to use it.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="events">
+    <div class="wrap">
+      <div class="section-head"><span class="tape"></span><h2>Coming up</h2></div>
+      <div class="tickets">
+        <div class="ticket">
+          <div class="day">21</div>
+          <div class="month">September</div>
+          <h3>School resumption</h3>
+          <p>Bags are packed and by the door — new term starts here.</p>
+        </div>
+        <div class="ticket">
+          <div class="day">25</div>
+          <div class="month">December</div>
+          <h3>Christmas</h3>
+          <p>The big one. Everyone's home for it.</p>
+        </div>
+        <div class="ticket">
+          <div class="day">25</div>
+          <div class="month">January</div>
+          <h3>Divine's birthday</h3>
+          <p>Cake, candles, and Divine's choice of song on repeat.</p>
+        </div>
+        <div class="ticket">
+          <div class="day">17</div>
+          <div class="month">September</div>
+          <h3>Kelvin's birthday</h3>
+          <p>Mark the calendar for next year — cake's non-negotiable.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="photos">
+    <div class="wrap">
+      <div class="section-head"><span class="tape"></span><h2>Photo corner</h2></div>
+      <div class="frames">
+        <div class="frame"><span>Beach trip, July</span></div>
+        <div class="frame"><span>Sunday lunch crew</span></div>
+        <div class="frame"><span>The car, freshly washed</span></div>
+        <div class="frame"><span>Graduation day</span></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer id="contact">
+  <div class="wrap">
+    <h2>Got news to share?</h2>
+    <p>If something happened — big, small, or just funny — send it over and it goes up here for everyone to see.</p>
+    <div class="contact-row">
+      <a href="mailto:yummajethro@yahoo.com">Dad — yummajethro@yahoo.com</a>
+      <a href="mailto:yummadorcas@gmail.com">Mum — yummadorcas@gmail.com</a>
+      <a href="mailto:kelvinyumma@gmail.com">Kelvin — kelvinyumma@gmail.com</a>
+      <a href="mailto:yummadavid@gmail.com">David — yummadavid@gmail.com</a>
+    </div>
+    <p class="fine">WhatsApp us: 0806 573 0107 · 0803 748 2999 · 0703 588 0604 · 0815 259 4310</p>
+    <p class="fine">001 Wada Road, Ganaja Otokiti Bypass — find us there most Sundays.<br>Made with love (and a little bit of chaos) by the Yummas, for the Yummas.</p>
+  </div>
+</footer>
+
+<script>
+  const toggle = document.getElementById('navToggle');
+  const navList = document.getElementById('navList');
+  toggle.addEventListener('click', () => {
+    const isOpen = navList.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', isOpen);
+  });
+  navList.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      navList.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  // 3D scroll reveal for the crew lineup: each card rotates in from depth
+  // as it enters the viewport, oldest to youngest, left to right.
+  const crewCards = document.querySelectorAll('.crew-card');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reduceMotion && 'IntersectionObserver' in window) {
+    const crewObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const delay = Array.from(crewCards).indexOf(entry.target) * 90;
+          setTimeout(() => entry.target.classList.add('in-view'), delay);
+          crewObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.35 });
+    crewCards.forEach(card => crewObserver.observe(card));
+  } else {
+    crewCards.forEach(card => card.classList.add('in-view'));
+  }
+
+  // Subtle 3D depth in the hero: the two background blobs drift and tilt
+  // in space as the page scrolls, then settle once the hero is passed.
+  const heroBlobs = document.querySelectorAll('.hero .blob');
+  if (!reduceMotion && heroBlobs.length) {
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const y = Math.min(window.scrollY, 600);
+        heroBlobs.forEach((blob, i) => {
+          const depth = i === 0 ? 1 : 0.6;
+          const rotate = (y * 0.04 * depth).toFixed(2);
+          const shift = (y * 0.18 * depth).toFixed(1);
+          blob.style.transform = `translateY(${shift}px) rotate3d(1, 1, 0, ${rotate}deg)`;
+        });
+        ticking = false;
+      });
+    }, { passive: true });
+  }
+</script>
+
+</body>
+</html>
